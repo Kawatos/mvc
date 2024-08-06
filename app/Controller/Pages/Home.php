@@ -3,16 +3,19 @@ namespace App\Controller\Pages;
 
 use \App\Utils\View;
 
-class Home {
+class Home extends Page{
     
     /**
      * Metodo responsavel por retornar o conteudo da home
      * @return string
      */
     public static function getHome(){
-        return View::render('pages/home', [
+        $content = View::render('pages/home', [
             'name' => 'WDEV - Canal',
-            'description' => 'Canal do youtube: https://youtube.com.br/wdevoficial'
+            'description' => 'Canal do youtube: https://youtube.com.br/wdevoficial',
+            'site' => 'https://youtube.com.br/wdevoficial'
         ]);
+
+        return parent::getPage('WDEV - Canal - HOME', $content);
     }
 }

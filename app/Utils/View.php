@@ -19,8 +19,15 @@ Class View {
     public static function render($view, $vars = []) {
         //Conteudo da view
         $contentView = self::getContentView($view);
+        // chaves do array de variaveis
+        $keys = array_keys($vars);
+        $keys = array_map(function($item){
+            return '{{'.$item.'}}';
+        }, $keys);
+    
+
         //Retorna o conteúdo renderizado
-        return $contentView;
+        return str_replace($keys,array_values($vars),$contentView);
     }
 }
 ?>
