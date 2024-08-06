@@ -9,16 +9,17 @@ Class View {
      * @return string [type]
      */
     private static function getContentView($view){
-        $file = __DIR__.'/../../resources/view'.$view.'.html';
+        $file = __DIR__.'/../../resources/view/'.$view.'.html';
         return file_exists($file) ? file_get_contents($file) : '';
 
     }
     /**
      * Metodo responsavel por retornar o conteudo renderizado de uma view
      * @param string $view
+     * @param array $vars (string/numeric)
      * @return string
      */
-    public static function render($view) {
+    public static function render($view, $vars = []) {
         //Conteudo da view
         $contentView = self::getContentView($view);
         //Retorna o conteúdo renderizado
