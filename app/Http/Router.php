@@ -2,6 +2,7 @@
 namespace App\Http;
 
 use \Closure;
+use Exception;
 
 class Router {
     /**
@@ -66,10 +67,7 @@ class Router {
      * @param array
      */
     private function addRoute($method,$route,$params=[]){
-        echo "<pre>";
-        print_r($params);
-        echo "</pre>"; 
-        exit;
+    
         //Validação dos parametros
         foreach($params as $key=>$value) {
             if($value instanceof Closure){
@@ -78,9 +76,13 @@ class Router {
                 continue;
             }
         }
-        echo "<pre>";
-        print_r($params);
-        echo "</pre>"; 
+
+        //Padrao de validacao da url
+        $patternRoute = '/^'.str_replace('/', '\/',$route).'$/';
+
+        //adiciona a rota dentro da classe
+        $this->routes[$patternRoute][$method] = $params;
+        
     }
 
     /**
@@ -91,6 +93,58 @@ class Router {
      */
     public function get($route, $params = []) {
         return $this->addRoute('GET', $route, $params);
+    }
+
+    /**
+     * 
+     * Metodo responsavel por retornar a uri desconsiderando o profixo
+     *
+     * @return string
+     */
+    private function getUri() {
+        //URI da request
+        $uri = $this->request->getUri();
+        /* echo "<pre>";
+        print_r($uri);
+        echo "</pre>"; 
+        exit; */
+        //Fatia a uri com o prefixo
+        $xUri = strlen($this->prefix) ? explode($this->prefix,$uri) : [$uri];
+        echo "<pre>";
+        print_r($xUri);
+        echo "</pre>"; 
+        exit;
+        
+    }
+
+
+    /**
+     * 
+     * 
+     * Metodo responsavel por retornar os dados da rota atual
+     * @return array
+     */
+    private function getRoute() {
+        //URI
+        $uri = $this->getUri();
+    }
+
+
+    /**
+     * metodo responsavel por executar a rota atual
+     * @return Response
+     */
+    public function run(){
+        try{
+            //Obtem a rota atual
+            $route = $this->getRoute();
+            echo "<pre>";
+            print_r($route);
+            echo "</pre>"; 
+            exit;
+        } catch(Exception $e) {
+            return new Response($e->getCode(),$e->getMessage());
+        }
     }
 }
 ?>

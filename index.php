@@ -5,7 +5,7 @@ use \App\Http\Router;
 use \App\Http\Response;
 use \App\Controller\Pages\Home;
 
-define('URL', 'http://localhost/testes/mvc');
+define('URL', 'http://localhost/mvc');
 
 $obRouter = new Router(URL);
 
@@ -16,6 +16,7 @@ $obRouter->get('/',[
     }
 ]);
 
+$obRouter->run()->sendResponse();
 
 
 /* echo "<pre>";
