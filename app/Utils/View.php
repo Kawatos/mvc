@@ -1,6 +1,21 @@
 <?php 
 namespace App\Utils;
 Class View {
+
+    /**
+     * variaveis padrões da view
+     * @var array
+     */
+    private static $vars = [];
+
+    /**
+     * metodo responsavel por definir os dados inciais da classe
+     * @param array
+     */
+    public static function initi($vars = []){
+        self::$vars = $vars;
+    }
+
     /**
      * Metodo responsavel por retornar o conteúdo de uma view
      * @param string  $view
