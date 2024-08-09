@@ -110,11 +110,9 @@ class Router {
         exit; */
         //Fatia a uri com o prefixo
         $xUri = strlen($this->prefix) ? explode($this->prefix,$uri) : [$uri];
-        echo "<pre>";
-        print_r($xUri);
-        echo "</pre>"; 
-        exit;
-        
+        //retorna a uri sem prefixo
+        return end($xUri);
+       
     }
 
 
@@ -127,6 +125,22 @@ class Router {
     private function getRoute() {
         //URI
         $uri = $this->getUri();
+        //method
+        $httpMethod = $this->request->getHttpMethod();
+        //valida as rotas
+        foreach($this->routes as $patternRoute=>$methods) {
+            //VERIFICA SE A uri BATYE O PADRAO
+            if(preg_match($patternRoute,$uri)){
+                //verifica o metodo
+                if ($methods[$httpMethod]){
+                    return $methods [$httpMethod];
+                }
+                //metodo nao permitido/definido
+                throw new Exception("Metodo nao e permitido", 405);
+            }
+        }
+        //url nao encontrada
+        throw new Exception("URL nao encontrada", 404);
     }
 
 
