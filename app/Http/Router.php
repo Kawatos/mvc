@@ -96,6 +96,36 @@ class Router {
     }
 
     /**
+     * metodo responsável por definir uma rota de POST
+     * @param string $route
+     * @param array $params
+     * 
+     */
+    public function post($route, $params = []) {
+        return $this->addRoute('POST', $route, $params);
+    }
+
+    /**
+     * metodo responsável por definir uma rota de PUT
+     * @param string $route
+     * @param array $params
+     * 
+     */
+    public function put($route, $params = []) {
+        return $this->addRoute('PUT', $route, $params);
+    }
+
+    /**
+     * metodo responsável por definir uma rota de DELETE
+     * @param string $route
+     * @param array $params
+     * 
+     */
+    public function delete($route, $params = []) {
+        return $this->addRoute('DELETE', $route, $params);
+    }
+
+    /**
      * 
      * Metodo responsavel por retornar a uri desconsiderando o profixo
      *
@@ -152,10 +182,18 @@ class Router {
         try{
             //Obtem a rota atual
             $route = $this->getRoute();
-            echo "<pre>";
+            if(!isset($route['controller'])){
+                throw new Exception("URL nao pode ser processada", 500);
+            }
+
+            //argumentos da funcao
+            $args = [];
+            //retorna a execucao da funcao
+            return call_user_func_array($route['controller'], $args);
+            /* echo "<pre>";
             print_r($route);
             echo "</pre>"; 
-            exit;
+            exit; */
         } catch(Exception $e) {
             return new Response($e->getCode(),$e->getMessage());
         }
