@@ -34,6 +34,8 @@ Class View {
     public static function render($view, $vars = []) {
         //Conteudo da view
         $contentView = self::getContentView($view);
+
+        $vars = array_merge(self::$vars,$vars);
         // chaves do array de variaveis
         $keys = array_keys($vars);
         $keys = array_map(function($item){
