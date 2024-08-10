@@ -2,7 +2,9 @@
 namespace App\Http;
 
 use \Closure;
-use Exception;
+use \Exception;
+use Reflection;
+use \ReflectionFunction;
 
 class Router {
     /**
@@ -43,6 +45,8 @@ class Router {
         $this->setPrefix();
     }
 
+    
+
     /**
      * metodo responsável por definir o prefixo das rotas
      * 
@@ -76,9 +80,22 @@ class Router {
                 continue;
             }
         }
+        //Variaveis da rota
+        $params['variables'] = [];
+
+        //padrao de validacao das variaveis das rotas
+        $patternVariable = '/{(.*?)}/';
+        if (preg_match_all($patternVariable, $route, $matches)) {
+            $route = preg_replace($patternVariable, '(.*?)',$route);
+            $params['variables'] = $matches[1];
+        }
 
         //Padrao de validacao da url
-        $patternRoute = '/^'.str_replace('/', '\/',$route).'$/';
+        $patternRoute = '/^'.str_replace('/', '\/', $route) . '$/';
+        /* echo "<pre>";
+        print_r($patternRoute);
+        echo "</pre>";  */
+        
 
         //adiciona a rota dentro da classe
         $this->routes[$patternRoute][$method] = $params;
@@ -160,9 +177,19 @@ class Router {
         //valida as rotas
         foreach($this->routes as $patternRoute=>$methods) {
             //VERIFICA SE A uri BATYE O PADRAO
-            if(preg_match($patternRoute,$uri)){
+            if(preg_match($patternRoute,$uri,$matches)){
                 //verifica o metodo
-                if ($methods[$httpMethod]){
+                if (isset($methods[$httpMethod])){
+                    //remove a primeira posicao
+                    unset($matches[0]);
+                    //variaveis processadas
+                    $keys = $methods[$httpMethod]['variables'];
+                    $methods[$httpMethod]['variables'] = array_combine($keys, $matches);
+                    $methods[$httpMethod]['variables']['request'] = $this->request;
+
+                    /* echo "<pre>";
+                    print_r($methods);
+                    echo "</pre>"; exit; */
                     return $methods [$httpMethod];
                 }
                 //metodo nao permitido/definido
@@ -188,6 +215,20 @@ class Router {
 
             //argumentos da funcao
             $args = [];
+
+            //reflection
+            $reflection = new ReflectionFunction($route['controller']);
+            foreach ($reflection->getParameters() as $parameter) {
+                $name = $parameter->getName();
+                $args[$name] = $route['variables'][$name] ?? '';
+                
+            }
+            /* echo "<pre>";
+            print_r($args);
+            echo "</pre>"; 
+            exit;  */
+            /* $args = $this->getRouteArgs($route); */
+            
             //retorna a execucao da funcao
             return call_user_func_array($route['controller'], $args);
             /* echo "<pre>";
@@ -195,8 +236,30 @@ class Router {
             echo "</pre>"; 
             exit; */
         } catch(Exception $e) {
-            return new Response($e->getCode(),$e->getMessage());
+        return new Response($e->getCode(),$e->getMessage());
         }
     }
+    
+
+
+    /* *
+     * Método responsável por obter os argumentos da rota atual
+     * @param array $route
+     * @return array
+    */
+    /* private function getRouteArgs($route) {
+        // URI da request
+        $uri = $this->getUri();
+
+        // Expressão regular para a rota
+        foreach ($this->routes as $patternRoute => $methods) {
+            if (preg_match($patternRoute, $uri, $matches)) {
+                array_shift($matches); // Remove o primeiro elemento, que é a URI completa
+                return $matches;
+            }
+        }
+
+        return [];
+    } */
 }
 ?>
