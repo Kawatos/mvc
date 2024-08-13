@@ -15,10 +15,22 @@ $obRouter->get('/sobre',[
     }
 ]);
 
-//rota dinamica
+$obRouter->get('/depoimentos',[
+    function(){
+        return new Response(200,Pages\Testimony::getTestimonies());
+    }
+]);
+
+$obRouter->post('/depoimentos',[
+    function($request){
+        return new Response(200,Pages\Testimony::getTestimonies());
+    }
+]);
+
+/* //rota dinamica
 $obRouter->get('/pagina/{idPagina}/{acao}',[
     function($idPagina, $acao){
         return new Response(200, 'Pagina ' . $idPagina. ' - ' . $acao);
     }
-]);
+]); */
 ?>
