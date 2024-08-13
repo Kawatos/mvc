@@ -2,7 +2,7 @@
 namespace App\Controller\Pages;
 
 use \App\Utils\View;
-use \App\Model\Entity\Organization;
+use \App\Model\Entity\Testimony as EntityTestimony;
 
 class Testimony extends Page{
     
@@ -17,5 +17,24 @@ class Testimony extends Page{
         ]);
 
         return parent::getPage('DEPOIMENTOS > WDEV', $content);
+    }
+
+    /**
+     * Metodo responsave por cadastrar umdepoimento
+     *
+     * @param Request $request
+     * @return string
+     */
+    public static function insertTestimony($request){
+        //Dados do post
+        $postVars= $request->getPostVars();
+
+
+        //Nova Instancia de Depoimento
+        $obTestimony = new EntityTestimony;
+        $obTestimony->nome = $postVars['nome'];
+        $obTestimony->mensagem = $postVars['mensagem'];
+        $obTestimony->cadastrar();
+        return self::getTestimonies();
     }
 }

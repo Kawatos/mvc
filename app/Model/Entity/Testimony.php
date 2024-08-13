@@ -22,7 +22,21 @@ class Testimony{
     public $mensagem;
 
     /**
-     * Data de publicacao dodepoimento
+     * Data de publicacao do depoimento
      */
+
+    public $data;
+    /**
+     * metodo responsavel por cadastrar a instancia no banco de dados
+     * @return boolean
+     */
+
+     public function cadastrar(){
+        echo "<pre>";
+        print_r($this);
+        echo "</pre>"; 
+        exit;
+     }
+
 }
 ?>
