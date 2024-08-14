@@ -5,6 +5,23 @@ use \App\Utils\View;
 use \App\Model\Entity\Testimony as EntityTestimony;
 
 class Testimony extends Page{
+
+    /**
+     * metodo responsavel por obter a renderização dos itens de depoimentos para a pagina
+     * @return string
+     */
+    private static function getTestimonyItems(){
+        //depoimentos
+        $itens = '';
+        $results = EntityTestimony::getTestimonies(null,'id DESC');
+        //renderiza o item
+        while($obTestimony = $results->fecthObject(EntityTestimony::class)){
+            echo "<pre>";
+            print_r($obTestimony);
+            echo "</pre>"; exit;
+        }
+        return $itens;
+    }
     
     /**
      * Metodo responsavel por retornar o conteudo da pagina de depoimentos (view)
