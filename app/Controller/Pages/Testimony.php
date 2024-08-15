@@ -1,6 +1,7 @@
 <?php 
 namespace App\Controller\Pages;
 
+
 use \App\Utils\View;
 use \App\Model\Entity\Testimony as EntityTestimony;
 
@@ -15,10 +16,15 @@ class Testimony extends Page{
         $itens = '';
         $results = EntityTestimony::getTestimonies(null,'id DESC');
         //renderiza o item
-        while($obTestimony = $results->fecthObject(EntityTestimony::class)){
-            echo "<pre>";
-            print_r($obTestimony);
-            echo "</pre>"; exit;
+        while($obTestimony = $results->fetchObject(EntityTestimony::class)){
+            $itens .= View::render('pages/testimony/item', [
+                'nome' => $obTestimony->nome,
+                'mensagem' => $obTestimony->mensagem,
+                'data' => date('d/m/Y H:i:s',strtotime($obTestimony->data))
+
+                
+            ]);
+            
         }
         return $itens;
     }
@@ -30,7 +36,7 @@ class Testimony extends Page{
     public static function getTestimonies(){
         
         $content = View::render('pages/testimonies', [
-            
+            'itens' => self::getTestimonyItems()
         ]);
 
         return parent::getPage('DEPOIMENTOS > WDEV', $content);

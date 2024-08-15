@@ -231,10 +231,7 @@ class Router {
             
             //retorna a execucao da funcao
             return call_user_func_array($route['controller'], $args);
-            /* echo "<pre>";
-            print_r($route);
-            echo "</pre>"; 
-            exit; */
+            
         } catch(Exception $e) {
         return new Response($e->getCode(),$e->getMessage());
         }
