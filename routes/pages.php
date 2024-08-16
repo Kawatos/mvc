@@ -18,16 +18,14 @@ $obRouter->get('/sobre',[
 ]);
 
 $obRouter->get('/depoimentos',[
-    function(){
-        return new Response(200,Pages\Testimony::getTestimonies());
+    function($request){
+        return new Response(200,Pages\Testimony::getTestimonies($request));
     }
 ]);
 
 $obRouter->post('/depoimentos',[
     function($request){
-        echo "<pre>";
-        print_r($request);
-        echo "</pre>"; exit;
+        
         
         return new Response(200,Pages\Testimony::insertTestimony($request));
     }

@@ -40,7 +40,7 @@ class Router {
      * 
      */
     public function __construct($url){
-        $this->request = new Request();
+        $this->request = new Request($this);
         $this->url = $url;
         $this->setPrefix();
     }
@@ -237,26 +237,14 @@ class Router {
         }
     }
     
-
-
-    /* *
-     * Método responsável por obter os argumentos da rota atual
-     * @param array $route
-     * @return array
-    */
-    /* private function getRouteArgs($route) {
-        // URI da request
-        $uri = $this->getUri();
-
-        // Expressão regular para a rota
-        foreach ($this->routes as $patternRoute => $methods) {
-            if (preg_match($patternRoute, $uri, $matches)) {
-                array_shift($matches); // Remove o primeiro elemento, que é a URI completa
-                return $matches;
-            }
-        }
-
-        return [];
-    } */
+    /**
+     * metodo responsavel por retornar a urtl atual
+     * 
+     *
+     * @return string
+     */
+    public function getCurrentUrl(){
+        return $this->url.$this->getUri();;
+    }
 }
 ?>
