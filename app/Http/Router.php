@@ -71,6 +71,7 @@ class Router {
      * @param array
      */
     private function addRoute($method,$route,$params=[]){
+        //
     
         //Validação dos parametros
         foreach($params as $key=>$value) {
@@ -80,6 +81,11 @@ class Router {
                 continue;
             }
         }
+
+        $params['middleware'] = $params['middlewares'] ?? [];
+
+        
+
         //Variaveis da rota
         $params['variables'] = [];
 
