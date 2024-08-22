@@ -6,7 +6,9 @@ use \App\Controller\Pages;
 
 // Rota Home
 $obRouter->get('/',[
-    
+    'middlewares' => [
+        'maintaince'
+    ],
     function(){
         return new Response(200,Pages\Home::getHome());
     }

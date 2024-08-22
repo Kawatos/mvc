@@ -1,4 +1,7 @@
 <?php 
+
+namespace App\Http\Middleware;
+
 class Queue{
     /**
      * Fila de middlewares a serem executados
@@ -31,6 +34,19 @@ class Queue{
         $this->controller =  $controller;
         $this->controllerArgs = $controllerArgs;
         
+    }
+
+    /**
+     * Metodo responsavel por executar o proximo nivel da fila de middlewares
+     *
+     * @param Request $request
+     * @return Response
+     */
+
+    public function next($request){
+        echo "<pre>";
+        print_r($this);
+        echo "</pre>"; exit;
     }
 }
 
