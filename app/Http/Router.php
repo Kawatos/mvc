@@ -237,7 +237,7 @@ class Router {
             /* $args = $this->getRouteArgs($route); */
 
             //retorna a execcuao da fila de middlewares
-            return (new MiddlewareQueue($route['middlewares'],$route['controller'],$args))->next($this->request);
+            return (new MiddlewareQueue($route['middleware'],$route['controller'],$args))->next($this->request);
             
             
         } catch(Exception $e) {

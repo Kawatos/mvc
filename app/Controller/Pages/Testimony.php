@@ -25,7 +25,7 @@ class Testimony extends Page{
         echo "</pre>"; */
 
         $queryParams = $request->getQueryParams();
-        $paginaAtual = $queryParams['page' ?? 1];
+        $paginaAtual = $queryParams['page'] ?? 1;
 
         //instancia de paginacao
         $obPagination = new Pagination($quantidadeTotal, $paginaAtual,3);
